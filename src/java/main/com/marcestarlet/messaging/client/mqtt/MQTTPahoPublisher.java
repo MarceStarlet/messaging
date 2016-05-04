@@ -11,14 +11,14 @@ import org.slf4j.LoggerFactory;
 /**
  * MQTT Publisher using Paho API
  * Protocol MQTTv3
- * Use default values or pass new values to the main
+ * Use default values or pass new values to the main method
  * @author MarceStarlet
  *
  * Messaging
  */
 public class MQTTPahoPublisher {
 	
-	// using slf4j - NOTE: it is not provided with Paho add to your classpath or as a maven dependencies
+	// using slf4j - NOTE: it is not provided with Paho add to your classpath or in the maven dependencies
 	private static Logger logger = LoggerFactory.getLogger(MQTTPahoPublisher.class);
 
 	/*
@@ -28,10 +28,10 @@ public class MQTTPahoPublisher {
 	private String uri = "tcp://iot.eclipse.org:1883";
 	// default clientId
 	// remember that must be unique for each client if you want to keep a session
-	private String clientId = "JavaSimplePublisher";
+	private String clientId = "JavaSamplePublisher";
 	
 	/*
-	 *  attributes for publish/subscribe
+	 *  attributes for publish
 	 */
 	// use a default test topic name
 	private String topic = "test";
@@ -45,11 +45,12 @@ public class MQTTPahoPublisher {
 	}
 	
 	public void executeClient(){
+		MqttClient samplePublisher = null;
 		try {
 			// set default memory persistence in case QoS is 1 or 2
 			MemoryPersistence persistence = new MemoryPersistence();
 			// create new MQTT Client using URI, CLientID and persistence
-			MqttClient samplePublisher = new MqttClient(getUri(), getClientId(), persistence);
+			samplePublisher = new MqttClient(getUri(), getClientId(), persistence);
 			// create MQTT Options to set the connection attributes
 			MqttConnectOptions options = new MqttConnectOptions();
 			// default cleanSession is set to true to indicate the broker to don't keep session
@@ -73,13 +74,14 @@ public class MQTTPahoPublisher {
 			
 		} catch (MqttException e) {
 			// handle exception
-			logger.error("reason ", e.getReasonCode());
-			logger.error("msg ", e.getMessage());
-			logger.error("loc ", e.getLocalizedMessage());
-			logger.error("cause ", e.getCause());
-			logger.error("excep ", e);
-			logger.error("trace", (Object[])e.getStackTrace());
-		}
+			logger.error("Error while publishing");
+			logger.error("Reason ", e.getReasonCode());
+			logger.error("Message ", e.getMessage());
+			logger.error("Localized Message ", e.getLocalizedMessage());
+			logger.error("Cause ", e.getCause());
+			logger.error("Exception ", e);
+			logger.error("StackTrace", (Object[])e.getStackTrace());
+		} 
 	}
 
 	/**

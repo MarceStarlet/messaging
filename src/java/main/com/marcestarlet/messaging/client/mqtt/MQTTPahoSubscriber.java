@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class MQTTPahoSubscriber implements MqttCallback{
 	
 	// using slf4j - NOTE: it is not provided with Paho add to your classpath or in the maven dependencies
-	private static Logger logger = LoggerFactory.getLogger(MQTTPahoPublisher.class);
+	private static Logger logger = LoggerFactory.getLogger(MQTTPahoSubscriber.class);
 
 	/*
 	 *  attributes for connection
@@ -58,9 +58,9 @@ public class MQTTPahoSubscriber implements MqttCallback{
 			MqttConnectOptions options = new MqttConnectOptions();
 			// default cleanSession is set to true to indicate the broker to don't keep session
 			// change to false if you want the broke keep a session
-			options.setCleanSession(true);
+			options.setCleanSession(false);
 			// set 30 sec of keepAlive
-			options.setKeepAliveInterval(30);
+			//options.setKeepAliveInterval(30);
 			
 			logger.info("Connecting to: {}", getUri());
 			// establish a connection 
@@ -82,14 +82,6 @@ public class MQTTPahoSubscriber implements MqttCallback{
 			logger.error("Cause ", e.getCause());
 			logger.error("Exception ", e);
 			logger.error("StackTrace", (Object[])e.getStackTrace());
-		} finally { 
-			if(null != sampleSubscriber) {
-				try {
-					sampleSubscriber.disconnect();
-				} catch (MqttException e) {
-					logger.error("Error while disconnecting",e);
-				}
-			}
 		}
 	}
 	
